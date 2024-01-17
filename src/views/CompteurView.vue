@@ -1,14 +1,27 @@
 <script>
+import {useCounterStore} from "../stores/counter.js"
+
 export default{
     name: 'CompteurView',
+    setup(){
+        const counterStore = useCounterStore()
+        return{
+            counterStore,
+        }
+    },
     data(){
         return{
-            compteur: 0
+            
+        }
+    },
+    computed:{
+        incremente(){
+            return this.counterStore.compteur
         }
     },
     methods:{
         increment(){
-            this.compteur++
+            this.counterStore.increment()
         }
     }
 }
@@ -16,8 +29,8 @@ export default{
 
 <template>
     <div>
-        <span>J'ai cliqué {{ compteur }} fois.</span>
-        <button @click="increment()">Clique</button>
+        <span>J'ai cliqué {{ incremente }} fois.</span>
+        <button @click="increment">Clique</button>
     </div>
 </template>
 

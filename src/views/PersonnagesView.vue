@@ -1,39 +1,28 @@
 <script>
 import CartePerso from '../components/CardPerso.vue'
+import FormPerso from '../components/FormPerso.vue'
+import { usePersonnageStore} from "../stores/personnage.js"
+
 export default{
   name : 'PersonnagesView',
+  setup(){
+    const personnageStore = usePersonnageStore()
+    return{
+      personnageStore,
+    }
+  },
   components : {
     CartePerso,
+    FormPerso
   },
   data(){
     return{
-      formPerso : {
-        pseudo :'',
-        age: 0
-      },
-      personnages : [
-        {
-          pseudo:'Grégory',
-          age: 15
-        }, 
-        {
-          pseudo:'Paul',
-          age:23
-        },
-        {
-          pseudo:'Norman',
-          age:47
-        }
-      ]
+
     }
   },
-  methods:{
-    ajoutPerso(){
-      this.personnages.push(this.formPerso)
-      this.formPerso = {
-        pseudo:'',
-        age:0
-      }
+  computed:{
+    personnages(){
+      return this.personnageStore.personnages
     }
   }
 }
@@ -41,13 +30,7 @@ export default{
 <template>
   <div class="personnages">
     <h1>This is a personnages page</h1>
-
-    <form @submit.prevent="ajoutPerso()">
-      <input type="text" placeholder="pseudo" v-model="formPerso.pseudo">
-      <input type="number" placeholder="age" v-model="formPerso.age">
-      <p class="error" v-if="formPerso.pseudo.length <3">Le pseudo doit faire au moins 3 caractères.</p>
-      <button type="submit">Ajouter</button>
-    </form>
+    <FormPerso />
     <div class="cartes">
       <div v-for="personnage in personnages" :key="personnage.pseudo">
         <CartePerso :personnage="personnage" />
